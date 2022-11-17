@@ -1,10 +1,44 @@
+/// By Henry
 #include "lib/include.h"
+
+char *reading_string(char delimiter, int *ptr){
+    char letter;
+    static char array[50];
+    int counter = 0;
+    letter = readChar();  
+    while (letter != delimiter){
+        array[counter] = letter;
+        letter = readChar();
+        counter ++;
+    }
+    *ptr = strlen(array);
+    return &array[0];
+}
+
+char *inverting_name(char *name, int length){
+    static char inverted_name[50];
+    int counter = 0;
+    int idx = 0; 
+    for (int i = length; i > 0; i--){
+        inverted_name[counter] = *(name + (i -1));
+        inverted_name[counter + 1] = idx + '0';
+        idx ++; 
+        counter = counter + 2;
+    }
+    return &inverted_name[0];
+}
 
 int main(void)
 {
     uint16_t valor = 0;
-    char c='5';
+    char c='5'; 
     //char b='a';
+    // Pointers 
+    // Sending Name to python
+    char name[] = "Henry"; 
+    char *p;  
+    p = &name[0]; // First address of the array 
+ 
     Configurar_PLL(_20MHZ);  //Confiuracion de velocidad de reloj
     Configurar_UART0();//Yo FCLK 20MHZ Baudrate 9600
 
@@ -17,13 +51,17 @@ int main(void)
     //  Configurar_UART2(); //Andrea,Avila,Pamela,Paulina -fclk 50MHZ Baud-rate 57600
     //  Configurar_UART5(); //Hector,Cecilia,Carolina,Jozzafat -fclk 40MHZ Baud-rate 28800
     Configurar_GPIO();
-   // Homogeneidad();
-    //printString("Holis Bolis");
-    printChar(c);
+    //UART_2_CONFIG(); 
+    //printChar(c);
     //printChar(b);
-    printString("\n");
-   // char *arr = readString(',');
-   // printString(&arr[0]);
+    //printString(p);
+    int length_of_array; 
+    length_of_array = 0; 
+    char *initial_name = reading_string(',', &length_of_array);
+    //printString(initial_name);
+    char *inverted_name = inverting_name(initial_name, length_of_array);
+    printString(inverted_name);
+    
     while(1)
     {
          c = readChar();
