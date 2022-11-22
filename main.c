@@ -39,8 +39,8 @@ int main(void)
     char *p;  
     p = &name[0]; // First address of the array 
  
-    Configurar_PLL(_20MHZ);  //Confiuracion de velocidad de reloj
-    Configurar_UART0();//Yo FCLK 20MHZ Baudrate 9600
+    Configurar_PLL(_40MHZ);  //Confiuracion de velocidad de reloj
+    //Configurar_UART0();//Yo FCLK 20MHZ Baudrate 9600
 
     //Experimento 1
     //  Configurar_UART1(); //Jorge,Alberto,Navarro,Saul,Fabela -fclk 25MHZ Baud-rate 57600
@@ -51,8 +51,8 @@ int main(void)
     //  Configurar_UART2(); //Andrea,Avila,Pamela,Paulina -fclk 50MHZ Baud-rate 57600
     //  Configurar_UART5(); //Hector,Cecilia,Carolina,Jozzafat -fclk 40MHZ Baud-rate 28800
     Configurar_GPIO();
-    //UART_2_CONFIG(); 
-    //printChar(c);
+    UART_2_CONFIG(); 
+    printChar(c);
     //printChar(b);
     //printString(p);
     int length_of_array; 

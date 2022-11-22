@@ -36,21 +36,21 @@ extern void UART_2_CONFIG(void){
     // Initialization of UART
     // UART2 PI N D6 YD7 This pins are connected to serial module
     // UART4 PIN C4 Y C5
-    SYSCTL -> RCGCUART = (1 << 2);  // Enabling UART MODULE 2, in general (1 << X) where X is number of module
-    SYSCTL -> RCGCGPIO |= (1 << 3); // Port D --> Bit field 3; Port C ---> 2
-    GPIOA -> AFSEL = (1 << 6) | (1 << 7); // pin D6 and D7
-    GPIOA -> PCTL = (1 << 24) | (1 << 28); // 6 and 7
-    GPIOA->DEN = (1 << 6) | (1 << 7);
+    SYSCTL -> RCGCUART |= 0x4;  // 0b100 // Enabling UART MODULE 2, in general (1 << X) where X is number of module
+    SYSCTL -> RCGCGPIO |= 0x8; // 0b1000// Port D --> Bit field 3; Port C ---> 2
+    GPIOD -> AFSEL = (1 << 6) | (1 << 7); // pin D6 and D7
+    GPIOD -> PCTL |= 0x11000000; //(1 << 24) | (1 << 28); // 6 and 7
+    GPIOD -> DEN = (1 << 6) | (1 << 7);
     // BAUD_RATE = 40,000,000  / (16 * 115200) = 21.70138889 ~ 22 
     // UARTFBRD[DIVFRAC] = integer(0.70138889 * 64 + 0.5) = 45.388 rounded --> 45
     UART2 -> CTL = (0 << 0) | (0 << 8) | (0 << 9); 
-    // Integer portion of brd 
+    // Integer portion of brd
     UART2 -> IBRD = 21; 
     // Fractional  portion of brd 
     UART2 -> FBRD = 45; 
     // Desired parameters 
-    UART2 -> LCRH = (0x3 << 5); // 8 bits, by default we get no parity and 1-stop bit
-    UART2 -> CC = (0 << 0); // SYSTEM CLOCK 
+    UART2 -> LCRH = (0x3 << 5) | (1<<4); // 8 bits, by default we get no parity and 1-stop bit and FIFO ENABLE
+    UART2 -> CC = 0; //(0 << 0); // SYSTEM CLOCK 
     UART2 -> CTL = (1 << 0) | (1 << 8) | (1 << 9); // bits 8th and 9th should be enabled together
 
 }
@@ -61,15 +61,16 @@ extern char readChar(void)
     //UART DR data 906
     int v;
     char c;
-    while((UART0->FR & (1<<4)) != 0 );
-    v = UART0->DR & 0xFF;
+    while((UART2->FR & (1<<4)) != 0 );
+    v = UART2->DR & 0xFF;
     c = v;
+    //c = UART2 -> DR; 
     return c;
 }
 extern void printChar(char c)
 {
-    while((UART0->FR & (1<<5)) != 0 );
-    UART0->DR = c;
+    while((UART2->FR & (1<<5)) != 0 );
+    UART2->DR = c;
 }
 extern void printString(char *string)
 {
