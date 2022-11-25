@@ -25,6 +25,7 @@ char *inverting_name(char *name, int length){
         idx ++; 
         counter = counter + 2;
     }
+    inverted_name[counter - 1] = '\n'; 
     return &inverted_name[0];
 }
 
@@ -52,7 +53,7 @@ int main(void)
     //  Configurar_UART5(); //Hector,Cecilia,Carolina,Jozzafat -fclk 40MHZ Baud-rate 28800
     Configurar_GPIO();
     UART_2_CONFIG(); 
-    printChar(c);
+    //printChar(c);
     //printChar(b);
     //printString(p);
     int length_of_array; 

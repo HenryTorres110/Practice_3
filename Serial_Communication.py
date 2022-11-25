@@ -23,8 +23,9 @@ while True:
         message = input("Message to write: ")
         port.write(bytes(message, 'UTF-8'))
     elif task == "read":
-        number_of_bytes = int(input("How many bytes do you wanna read? "))
-        reading = port.read(number_of_bytes)
+        ##number_of_bytes = int(input("How many bytes do you wanna read? "))
+        ##reading = port.read(number_of_bytes)
+        reading = port.readline()
         print(reading.decode()) #Default value UTF-8
     elif task == "write_my_name":
         name = input("What is your name? ")

@@ -38,8 +38,10 @@ extern void UART_2_CONFIG(void){
     // UART4 PIN C4 Y C5
     SYSCTL -> RCGCUART |= 0x4;  // 0b100 // Enabling UART MODULE 2, in general (1 << X) where X is number of module
     SYSCTL -> RCGCGPIO |= 0x8; // 0b1000// Port D --> Bit field 3; Port C ---> 2
+    GPIOD -> LOCK = 0x4C4F434B;
+    GPIOD -> CR = 0xC0; // Bit 6 y 7  
     GPIOD -> AFSEL = (1 << 6) | (1 << 7); // pin D6 and D7
-    GPIOD -> PCTL |= 0x11000000; //(1 << 24) | (1 << 28); // 6 and 7
+    GPIOD -> PCTL |= (GPIOD -> PCTL & 0x00FFFFFF) | 0x11000000; //(1 << 24) | (1 << 28); // 6 and 7
     GPIOD -> DEN = (1 << 6) | (1 << 7);
     // BAUD_RATE = 40,000,000  / (16 * 115200) = 21.70138889 ~ 22 
     // UARTFBRD[DIVFRAC] = integer(0.70138889 * 64 + 0.5) = 45.388 rounded --> 45
